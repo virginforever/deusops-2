@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: my_flask_app
+    ports:
+      - "8000:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432   #переменные
+      DB_NAME: mydb
+      DB_USER: user
+      DB_PASSWORD: password
+    volumes:
+      - static_volume:/app/static  # статические файлы как volume
+
+  db:
+    image: postgres:13-alpine  #тоже взял легковесный
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  static_volume:
+  db_data:
