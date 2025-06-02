@@ -14,6 +14,9 @@ services:
       DB_PASSWORD: password
     volumes:
       - static_volume:/app/static  # статические файлы как volume
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:13-alpine  #тоже взял легковесный
@@ -24,6 +27,11 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U user -d mydb -c 'SELECT 1'"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
 
 volumes:
   static_volume:
