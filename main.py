@@ -22,9 +22,7 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-    #Теперь возвращается Healthcheck
-    if health():
-        return health() 
+    return health() 
 
 
 @app.route('/health')
